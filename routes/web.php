@@ -13,6 +13,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [
+	'uses' => 'TasksController@getWelcome',
+	'as' => 'welcome'
+]);
+
+Route::group([
+	'middleware' => ['auth']
+], function(){
+	Route::get('/edit/{id}', [
+		'uses' => 'TasksController@getEditTask',
+		'as' => 'getEditTask'
+	]);
+
+	Route::get('/delete/{id}', [
+		'uses' => 'TasksController@getDeleteTask',
+		'as' => 'getDeleteTask'
+	]);
+
+	Route::post('/createTask', [
+		'uses' => 'TasksController@postCreateTask',
+		'as' => 'postCreateTask'
+	]);
+
+	Route::post('/editTask', [
+		'uses' => 'TasksController@postEditTask',
+		'as' => 'postEditTask'
+	]);
 });
+
+Auth::routes();
+
